@@ -4,8 +4,6 @@ var margin = {t:50,r:100,b:50,l:50};
 var width = document.getElementById('plot').clientWidth - margin.r - margin.l,
     height = document.getElementById('plot').clientHeight - margin.t - margin.b;
 
-d3.select('.custom-tooltip').style('opacity',0);
-
 var canvas = d3.select('.canvas');
 var plot = canvas
     .append('svg')
@@ -56,46 +54,55 @@ function dataLoaded(err,data,metadata){
         .entries(data);
 
     console.log(nestedData);
+ 
+
+ /*nestedData.forEach(function(t){
+        console.log(t.key);
+
+        t.bevType = t.key; 
+        t.totalProduction = 
+        t.totalProduction = function(t){
+            var total = 0;
+            t.values.forEach(function(each) {
+                total = total + each.value;
+
+            })
+            return total;
+        };
+    });*/
 
 
-//TEA
+ /* nestedData.sort(function(a,b){
+        return b.year - a.year;
+    })*/
+
+//tea
+
 
 plot.append('path')
     .attr('class','tea-data-line data-line')
     .datum(nestedData[0].values)
     .attr('d',lineGenerator);
 
-var nodes = plot.selectAll('.tea-data-point')
-    .data(nestedData[0].values)
-var nodesEnter = nodes.enter()
-    .append('circle')
-    .attr('class','tea-data-point')
-    .attr('cx',function(d){return scaleX(d.year)})
-    .attr('cy',function(d){return scaleY(d.value)})
-    .attr('r',15)
-    .call(tooltip)
 
-
-//COFFEE
 
 plot.append('path')
     .attr('class','coffee-data-line data-line')
     .datum(nestedData[1].values)
     .attr('d',lineGenerator);
 
-    var nodes = plot.selectAll('.coffee-data-point')
-    .data(nestedData[1].values)
-var nodesEnter = nodes.enter()
-    .append('circle')
-    .attr('class','coffee-data-point')
-    .attr('cx',function(d){return scaleX(d.year)})
-    .attr('cy',function(d){return scaleY(d.value)})
-    .attr('r',10)
-    .call(tooltip)
+/*var chart = plot.selectALl('.line'),
+    .data(nestedData),
+    .enter()
+    .append('line')*/
 
 
- function tooltip(type){   
-    type.on('mouseenter', function(d){
+plot.selectAll('.circle')
+    .data(data)
+    .enter()
+
+
+data.on('mouseenter', function(d){
                 console.log('enter');
                 console.log(d.year);
 
@@ -126,11 +133,6 @@ var nodesEnter = nodes.enter()
                 .style('left', left + -40 + 'px')
                 .style('top', top + 30 + 'px');
         })
-}
-
-
-
-
 }
 function parse(d){
 
